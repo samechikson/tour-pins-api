@@ -1,13 +1,14 @@
 import { fun } from './test-config';
 fun.cleanup;
 
-import { getOrCreateCustomer, getUser, updateUser } from '../src/customers';
+import {createCustomer, getOrCreateCustomer, getUser} from '../src/customers';
+import {mockUser} from "./mocks";
 
 let user: any;
 
 beforeAll( async () => {
-  user = { uid: Date.now().toString(), email: 'stripetest@example.com' };
-  await updateUser(user.uid, user);
+  user = await mockUser();
+  await createCustomer(user.uid);
 });
 
 test('getOrCreateCustomer creates/retrieves a Stripe Customer', async () => {

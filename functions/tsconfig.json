@@ -7,7 +7,8 @@
     "sourceMap": true,
     "strict": false,
     "target": "es2017",
-    "types": ["jest"]
+    "types": ["jest"],
+    "lib": ["esnext.asynciterable"]
   },
   "compileOnSave": true,
   "include": [
