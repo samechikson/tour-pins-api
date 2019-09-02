@@ -14,15 +14,14 @@ Gets a customer from Stripe
 export const getCustomer = async (uid: string) => {
   const user = await getUser(uid);
   return assert(user, 'stripeCustomerId');
-}
+};
 
 /**
 Updates the user document non-destructively
 */
 export const updateUser = async (uid: string, data: Object) => {
-  console.log('updating user');
   return await db.collection('users').doc(uid).set(data, { merge: true })
-}
+};
 
 /**
 Takes a Firebase user and creates a Stripe customer account
@@ -30,12 +29,12 @@ Takes a Firebase user and creates a Stripe customer account
 export const createCustomer = async (uid: any) => {
   const customer = await stripe.customers.create({
     metadata: { firebaseUID: uid }
-  })
+  });
 
-  await updateUser(uid, { stripeCustomerId: customer.id })
+  await updateUser(uid, { stripeCustomerId: customer.id });
 
   return customer;
-}
+};
 
 
 
@@ -54,4 +53,4 @@ export const getOrCreateCustomer = async (uid: string) => {
     return stripe.customers.retrieve(customerId);
   }
 
-}
+};

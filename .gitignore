@@ -65,4 +65,5 @@ node_modules/
 .env
 
 # Custom
-functions/service-account.json
+functions/service-account*
+.idea

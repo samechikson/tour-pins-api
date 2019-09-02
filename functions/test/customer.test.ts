@@ -5,8 +5,7 @@ import { getOrCreateCustomer, getUser, updateUser } from '../src/customers';
 
 let user: any;
 
-beforeAll(async () => {
-  console.log('in before all')
+beforeAll( async () => {
   user = { uid: Date.now().toString(), email: 'stripetest@example.com' };
   await updateUser(user.uid, user);
 });
