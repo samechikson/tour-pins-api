@@ -12,3 +12,5 @@ export {stripeAttachSource} from './sources';
 
 export {stripeCreateCharge, stripeGetCharges} from './charges';
 export {stripeGetSubscriptions, stripeCancelSubscription, stripeCreateSubscription} from './subscriptions';
+
+export {getGolfAdvisorDataById} from './golf-advisor'
