@@ -10,7 +10,6 @@ const getGolfDataById = (golfAdvisorCourseId) => {
         url: `https://${hostname}/ajax/course-layout/`,
         qs: { id: golfAdvisorCourseId },
     };
-    console.log("🚀 ~ file: golf-advisor.ts ~ line 13 ~ getGolfDataById ~ options", options)
     
     return new Promise((resolve, reject) => {
         request(options, function (error, response, body) {

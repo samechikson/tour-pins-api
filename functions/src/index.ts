@@ -1,16 +1,17 @@
-import * as functions from 'firebase-functions';
+require("dotenv").config();
+import * as functions from "firebase-functions";
 
 export const testFunction = functions.https.onCall(async (data, context) => {
-    const uid = context.auth && context.auth.uid;
-    const message = data.message;
+  const uid = context.auth && context.auth.uid;
+  const message = data.message;
 
-    return `${uid} sent a message of ${message}`
+  return `${uid} sent a message of ${message}`;
 });
-
 
 // export {stripeAttachSource} from './sources';
 
 // export {stripeCreateCharge, stripeGetCharges} from './charges';
 // export {stripeGetSubscriptions, stripeCancelSubscription, stripeCreateSubscription} from './subscriptions';
 
-export {getGolfAdvisorDataById} from './golf-advisor'
+export { getGolfAdvisorDataById } from "./golf-advisor";
+export { getMapboxVectorDataForCoordinates } from "./mapbox-coordinates";
