@@ -5,16 +5,17 @@ const VectorTile = require("@mapbox/vector-tile").VectorTile;
 const Protobuf = require("pbf");
 const zlib = require("zlib");
 
-function extractFeaturesFromTile(buffer, zoom, x, y) {
+function extractFeaturesFromTile(data, zoom, x, y) {
+  let buffer;
   // handle zipped buffers
-  if (buffer[0] === 0x78 && buffer[1] === 0x9c) {
-    buffer = zlib.inflateSync(buffer);
-  } else if (buffer[0] === 0x1f && buffer[1] === 0x8b) {
-    buffer = zlib.gunzipSync(buffer);
+  if (data[0] === 0x78 && data[1] === 0x9c) {
+    buffer = zlib.inflateSync(data);
+  } else if (data[0] === 0x1f && data[1] === 0x8b) {
+    buffer = zlib.gunzipSync(data);
   }
 
-  var tile = new VectorTile(new Protobuf(buffer));
-  var layers = Object.keys(tile.layers);
+  const tile = new VectorTile(new Protobuf(buffer));
+  const layers = Object.keys(tile.layers);
   console.log(
     "🚀 ~ file: mapbox-coordinates.ts ~ line 18 ~ readTile ~ layers",
     layers
