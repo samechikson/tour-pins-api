@@ -54,7 +54,14 @@ function lat2tile(lat, zoom) {
 }
 
 function getMapboxTileUrlFromLatLong(zoom, x, y) {
-  return `${process.env.MAPBOX_BASE_URL}${zoom}/${x}/${y}.mvt?style=${process.env.MAPBOX_MAP_STYLE_ID}&access_token=${process.env.MAPBOX_ACCESS_TOKEN}`;
+  const baseUrl =
+    process.env.MAPBOX_BASE_URL || functions.config().mapbox.base_url;
+  const mapStyleId =
+    process.env.MAPBOX_MAP_STYLE_ID || functions.config().mapbox.map_style_id;
+  const access_token =
+    process.env.MAPBOX_ACCESS_TOKEN || functions.config().mapbox.access_token;
+
+  return `${baseUrl}${zoom}/${x}/${y}.mvt?style=${mapStyleId}&access_token=${access_token}`;
 }
 
 async function getGeoJson(zoom, lat, long) {
