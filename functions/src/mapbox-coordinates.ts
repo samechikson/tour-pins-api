@@ -12,6 +12,8 @@ function extractFeaturesFromTile(data, zoom, x, y) {
     buffer = zlib.inflateSync(data);
   } else if (data[0] === 0x1f && data[1] === 0x8b) {
     buffer = zlib.gunzipSync(data);
+  } else {
+    buffer = data;
   }
 
   const tile = new VectorTile(new Protobuf(buffer));
