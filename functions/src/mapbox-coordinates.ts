@@ -9,10 +9,13 @@ function extractFeaturesFromTile(data, zoom, x, y) {
   let buffer;
   // handle zipped buffers
   if (data[0] === 0x78 && data[1] === 0x9c) {
+    console.log("inflated data");
     buffer = zlib.inflateSync(data);
   } else if (data[0] === 0x1f && data[1] === 0x8b) {
+    console.log("gunzipped data");
     buffer = zlib.gunzipSync(data);
   } else {
+    console.log("didn't modify data");
     buffer = data;
   }
 
@@ -25,14 +28,21 @@ function extractFeaturesFromTile(data, zoom, x, y) {
 
   const features = {};
   const featuresToLookFor = ["green", "bunker", "fairway"];
-  for (let i = 0; i < tile.layers.landuse.length; i++) {
-    console.log(tile.layers.landuse.feature(i).properties);
+  for (let layer of layers) {
+    console.log("----- layer", layer, " -------");
+    for (let i = 0; i < tile.layers[layer].length; i++) {
+      console.log(tile.layers[layer].feature(i).properties);
 
-    for (const feature of featuresToLookFor) {
-      if (tile.layers.landuse.feature(i).properties.type === feature) {
-        features[feature] = tile.layers.landuse
-          .feature(i)
-          .toGeoJSON(x, y, zoom);
+      for (const feature of featuresToLookFor) {
+        if (tile.layers[layer].feature(i).properties.type === feature) {
+          features[feature] = tile.layers[layer]
+            .feature(i)
+            .toGeoJSON(x, y, zoom);
+        }
+      }
+
+      if (layer === "water") {
+        features["water"] = tile.layers[layer].feature(i).toGeoJSON(x, y, zoom);
       }
     }
   }
@@ -70,8 +80,6 @@ function getMapboxTileUrlFromLatLong(zoom, x, y) {
 async function getGeoJson(zoom, lat, long) {
   const x = lon2tile(long, zoom);
   const y = lat2tile(lat, zoom);
-  console.log("🚀 ~ file: index.js ~ line 86 ~ x", x);
-  console.log("🚀 ~ file: index.js ~ line 88 ~ y", y);
 
   return new Promise((resolve, reject) => {
     request(
@@ -83,14 +91,11 @@ async function getGeoJson(zoom, lat, long) {
       function (err, response, body) {
         if (err) {
           reject(err);
+          return;
         }
-        if (response.statusCode === 401) {
-          new Error("Invalid Token");
-        }
-        if (response.statusCode !== 200) {
-          new Error(
-            `Error retrieving data:${JSON.stringify(response, null, 2)}`
-          );
+        if (+response.statusCode > 299) {
+          reject(body);
+          return;
         }
 
         resolve(extractFeaturesFromTile(body, zoom, x, y));
