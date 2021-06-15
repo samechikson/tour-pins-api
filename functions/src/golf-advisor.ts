@@ -2,13 +2,12 @@ const functions = require("firebase-functions");
 const helpers = require("./helpers");
 const request = require("request");
 
-const hostname =
-  process.env.GOLF_ADVISOR_URL || functions.config().golf_advisor.url;
+const url = process.env.GOLF_ADVISOR_URL || functions.config().golf_advisor.url;
 
 const getGolfDataById = (golfAdvisorCourseId) => {
   const options = {
     method: "GET",
-    url: `https://${hostname}/ajax/course-layout/`,
+    url,
     qs: { id: golfAdvisorCourseId },
   };
 
