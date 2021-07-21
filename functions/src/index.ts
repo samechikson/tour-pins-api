@@ -15,3 +15,4 @@ export const testFunction = functions.https.onCall(async (data, context) => {
 
 export { getGolfAdvisorDataById } from "./golf-advisor";
 export { getMapboxVectorDataForCoordinates } from "./mapbox-coordinates";
+export { duplicateDocument } from "./copy-collection";
