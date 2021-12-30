@@ -4,24 +4,6 @@ import { db, stripe } from "../config";
 import { assert, assertUID } from "../helpers";
 import { getOrCreateCustomer } from "./customers";
 
-// const lineItemsOptions: Record<
-//   string,
-//   Stripe.checkouts.sessions.ICheckoutLineItems
-// > = {
-//   golfEvent: {
-//     name: "Tour Pins Golf Event",
-//     amount: 5000,
-//     currency: "usd",
-//     quantity: 1,
-//   },
-//   singlePinSheet: {
-//     amount: 2000,
-//     currency: "usd",
-//     name: "One pin location sheet",
-//     quantity: 1,
-//   },
-// };
-
 export const generateCheckoutLinkForOnePinSheet = functions.https.onCall(
   async (data, context) => {
     const uid = assertUID(context);
@@ -117,5 +99,15 @@ export const generateCheckoutLinkForEvent = functions.https.onCall(
       );
 
     return session;
+  }
+);
+
+export const getPaymentIntent = functions.https.onCall(
+  async (data, context) => {
+    const paymentIntentId = assert(data, "paymentIntentId");
+
+    const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+
+    return paymentIntent;
   }
 );
