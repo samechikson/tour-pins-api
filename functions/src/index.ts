@@ -17,5 +17,8 @@ export { getGolfAdvisorDataById } from "./golf-advisor";
 export { getMapboxVectorDataForCoordinates } from "./mapbox-coordinates";
 export { duplicateDocument } from "./copy-collection";
 
-export { generateCheckoutLinkForOnePinSheet } from "./stripe/index";
+export {
+  generateCheckoutLinkForOnePinSheet,
+  generateCheckoutLinkForEvent,
+} from "./stripe/index";
 export { validatePayment } from "./pinSheet";
