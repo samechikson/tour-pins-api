@@ -1,0 +1,14 @@
+{
+  "mapbox": {
+    "base_url": "https://api.mapbox.com/v4/mapbox.mapbox-streets-v8/",
+    "map_style_id": "mapbox://styles/sametourpins/cklmijinh2s9117pdajpjomdz@00",
+    "access_token": "pk.eyJ1Ijoic2FtZXRvdXJwaW5zIiwiYSI6ImNrbG1pY25vODA5Ym8yd256OWRyZGxvZ2QifQ.MLEc5tjkM8P3AaxsBuEV5w"
+  },
+  "stripe": {
+    "key": "pk_test_ZLipRGI1oV6NEqOZs48grHEO007iEccJtn",
+    "secret_key": "sk_test_UpdxUOXr27yIbDKRM16jBJof00Iwb6jkAE"
+  },
+  "golf_advisor": {
+    "url": "https://www.golfpass.com/ajax/course-layout"
+  }
+}

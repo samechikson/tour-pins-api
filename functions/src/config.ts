@@ -1,4 +1,4 @@
-// import * as functions from "firebase-functions";
+import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
 admin.initializeApp();
@@ -9,7 +9,7 @@ const settings = { timestampsInSnapshots: true };
 db.settings(settings);
 
 // ENV variables
-// export const stripeSecret = functions.config().stripe.secret;
+export const stripeSecret = functions.config().stripe.secret_key;
 
-// import * as Stripe from 'stripe';
-// export const stripe = new Stripe(stripeSecret);
+import * as Stripe from "stripe";
+export const stripe = new Stripe(stripeSecret);
