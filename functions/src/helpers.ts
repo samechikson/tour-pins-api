@@ -35,6 +35,9 @@ export const catchErrors = async (promise: Promise<any>) => {
   try {
     return await promise;
   } catch (err) {
+    if (err instanceof functions.https.HttpsError) {
+      throw err;
+    }
     throw new functions.https.HttpsError("unknown", err);
   }
 };

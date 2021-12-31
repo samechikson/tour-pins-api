@@ -10,7 +10,13 @@ const validatePinSheetIsPaid = async (
   const pinSheetData = pinSheet.data();
 
   if (!pinSheetData.paymentIntentId) {
-    throw new Error("You have not paid for this pin sheet yet.");
+    throw new functions.https.HttpsError(
+      "not-found",
+      "This pin sheet has not been paid for yet.",
+      {
+        id: "PAYMENT_NOT_SUCCESSFUL",
+      }
+    );
   }
 
   const paymentIntent = await stripe.paymentIntents.retrieve(
@@ -18,11 +24,23 @@ const validatePinSheetIsPaid = async (
   );
 
   if (paymentIntent.status !== "succeeded") {
-    throw new Error("Payment for this pin sheet has not been completed.");
+    throw new functions.https.HttpsError(
+      "not-found",
+      "This pin sheet has not been paid for yet.",
+      {
+        id: "PAYMENT_NOT_SUCCESSFUL",
+      }
+    );
   }
 
   if (paymentIntent.metadata.firebaseUserUid !== firebaseUserUid) {
-    throw new Error("This pin sheet does not belong to you.");
+    throw new functions.https.HttpsError(
+      "permission-denied",
+      "This pin sheet does not belong to you.",
+      {
+        id: "PERMISSION_DENIED",
+      }
+    );
   }
 };
 
@@ -36,11 +54,23 @@ const validatePinSheetIsInPaidEvent = async (
   ).data();
 
   if (!golfEvent.pinSheetIds.includes(pinSheetId)) {
-    throw new Error("This pin sheet does not belong to this event.");
+    throw new functions.https.HttpsError(
+      "failed-precondition",
+      "This pin sheet is not for this event.",
+      {
+        id: "PIN_SHEET_NOT_IN_EVENT",
+      }
+    );
   }
 
   if (!golfEvent.paymentIntentId) {
-    throw new Error("This event has not been paid for yet.");
+    throw new functions.https.HttpsError(
+      "not-found",
+      "This event has not been paid for yet.",
+      {
+        id: "EVENT_PAYMENT_NOT_SUCCESSFUL",
+      }
+    );
   }
 
   const paymentIntent = await stripe.paymentIntents.retrieve(
@@ -48,11 +78,23 @@ const validatePinSheetIsInPaidEvent = async (
   );
 
   if (paymentIntent.status !== "succeeded") {
-    throw new Error("Payment for this event has not been completed.");
+    throw new functions.https.HttpsError(
+      "not-found",
+      "This event has not been paid for yet.",
+      {
+        id: "EVENT_PAYMENT_NOT_SUCCESSFUL",
+      }
+    );
   }
 
   if (paymentIntent.metadata.firebaseUserUid !== firebaseUserUid) {
-    throw new Error("This event does not belong to you.");
+    throw new functions.https.HttpsError(
+      "permission-denied",
+      "This event does not belong to you.",
+      {
+        id: "PERMISSION_DENIED",
+      }
+    );
   }
 };
 

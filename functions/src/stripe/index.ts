@@ -1,5 +1,4 @@
 import * as functions from "firebase-functions";
-// import Stripe = require("stripe");
 import { db, stripe } from "../config";
 import { assert, assertUID } from "../helpers";
 import { getOrCreateCustomer } from "./customers";
@@ -42,13 +41,10 @@ export const generateCheckoutLinkForOnePinSheet = functions.https.onCall(
     await db
       .collection("pinSheets")
       .doc(pinSheetId)
-      .set(
-        {
-          paymentIntentId: session.payment_intent,
-          belongsTo: [uid],
-        },
-        { merge: true }
-      );
+      .update({
+        paymentIntentId: session.payment_intent,
+        belongsTo: [uid],
+      });
 
     return session;
   }
