@@ -30,8 +30,9 @@ export const updateUser = async (uid: string, data: Object) => {
 /**
 Takes a Firebase user and creates a Stripe customer account
 */
-export const createCustomer = async (uid: any) => {
+export const createCustomer = async (uid: string, email?: string) => {
   const customer = await stripe.customers.create({
+    email,
     metadata: { firebaseUID: uid },
   });
 
@@ -49,7 +50,7 @@ export const getOrCreateCustomer = async (uid: string) => {
 
   // If missing customerID, create it
   if (!customerId) {
-    return createCustomer(uid);
+    return createCustomer(uid, user.email);
   } else {
     return stripe.customers.retrieve(customerId);
   }
