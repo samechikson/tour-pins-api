@@ -1,6 +1,7 @@
 import { db, stripe } from "../config";
 import * as functions from "firebase-functions";
 import { assert, assertUID, catchErrors } from "../helpers";
+import { customerHasValidSubscription } from "../stripe/customers";
 
 const validatePinSheetIsPaid = async (
   pinSheetId: string,
@@ -102,6 +103,14 @@ export const validatePayment = functions.https.onCall(async (data, context) => {
   const pinSheetId: string = assert(data, "pinSheetId");
   const golfEventId: string = data.golfEventId;
   const firebaseUserUid: string = assertUID(context);
+
+  // If user has a subscription, they can download the pin sheet
+  if (await customerHasValidSubscription(firebaseUserUid)) {
+    return {
+      message:
+        "Success: You have a subscription, you can download the pin sheet.",
+    };
+  }
 
   if (golfEventId) {
     return await catchErrors(

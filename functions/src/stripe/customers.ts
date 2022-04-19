@@ -54,3 +54,25 @@ export const getOrCreateCustomer = async (uid: string) => {
     return stripe.customers.retrieve(customerId);
   }
 };
+
+export const getCustomerSubscriptions = async (uid: string) => {
+  const customer = await getOrCreateCustomer(uid);
+  return stripe.subscriptions.list({ customer: customer.id });
+};
+
+export const customerHasValidSubscription = async (
+  uid: string
+): Promise<boolean> => {
+  const subscriptions = await getCustomerSubscriptions(uid);
+  if (
+    subscriptions.data &&
+    subscriptions.data.length > 0 &&
+    subscriptions.data.some(
+      (sub) => sub.status === "active" || sub.status === "trialing"
+    )
+  ) {
+    return true;
+  }
+
+  return false;
+};

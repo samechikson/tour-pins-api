@@ -27,6 +27,8 @@ export const generateCheckoutLinkForOnePinSheet = functions.https.onCall(
       payment_method_types: ["card"],
       success_url: successUrl,
       cancel_url: cancelUrl,
+      // @ts-ignore
+      allow_promotion_codes: true,
     });
 
     await stripe.paymentIntents.update(session.payment_intent as string, {
@@ -105,5 +107,19 @@ export const getPaymentIntent = functions.https.onCall(
     const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
 
     return paymentIntent;
+  }
+);
+
+export const getCustomerSubscriptions = functions.https.onCall(
+  async (data, context) => {
+    const uid = assertUID(context);
+
+    const stripeCustomer = await getOrCreateCustomer(uid);
+
+    const subscriptions = await stripe.subscriptions.list({
+      customer: stripeCustomer.id,
+    });
+
+    return subscriptions;
   }
 );

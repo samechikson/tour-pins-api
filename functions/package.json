@@ -3,7 +3,7 @@
   "scripts": {
     "lint": "tslint --project tsconfig.json",
     "build": "tsc",
-    "serve": "npm run build && firebase serve --only functions",
+    "serve": "npm run build && firebase serve --only functions --port 5001",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
     "deploy:prod": "firebase use tour-pin-sheets && firebase deploy --only functions",

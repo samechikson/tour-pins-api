@@ -16,5 +16,6 @@ export {
   generateCheckoutLinkForOnePinSheet,
   generateCheckoutLinkForEvent,
   getPaymentIntent,
+  getCustomerSubscriptions,
 } from "./stripe/index";
 export { validatePayment } from "./pinSheet";
