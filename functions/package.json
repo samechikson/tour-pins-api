@@ -22,7 +22,7 @@
     "firebase-functions": "^3.6.1",
     "firebase-functions-test": "^0.1.6",
     "pbf": "^3.2.1",
-    "qs": "^6.10.2",
+    "qs": "^6.10.3",
     "request": "^2.88.2",
     "stripe": "8.195.0"
   },
