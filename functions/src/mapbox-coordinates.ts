@@ -29,7 +29,7 @@ function extractFeaturesFromTile(data, zoom, x, y) {
   const featureCollection = { type: "FeatureCollection", features: [] };
 
   const featuresToLookFor = ["green", "bunker", "fairway"];
-  for (let layer of layers) {
+  for (const layer of layers) {
     console.log("----- layer", layer, " -------");
     for (let i = 0; i < tile.layers[layer].length; i++) {
       console.log(tile.layers[layer].feature(i).properties);

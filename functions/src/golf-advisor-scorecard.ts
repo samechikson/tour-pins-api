@@ -36,7 +36,14 @@ const scrapeScorecardData = (html) => {
   });
 
   tableElement.find("tbody tr").each((i, trElement) => {
-    const label = $(trElement).find("td:first").text().trim();
+    const label = $(trElement)
+      .find("td:first")
+      .text()
+      .trim()
+      .toLowerCase()
+      .replace(/[^[a-z]/gi, "")
+      .replace(/-m-|-w-|-+/g, "");
+
     $(trElement)
       .find("td")
       .each((j, tdElement) => {
