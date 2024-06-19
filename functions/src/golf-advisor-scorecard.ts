@@ -21,17 +21,24 @@ const getGolfCourseHtmlPage = (golfAdvisorCourseId) => {
   });
 };
 
-const scrapeScorecardData = (html) => {
+const scrapeScorecardData = (
+  html
+): {
+  name: string;
+  scorecard: any[];
+} => {
   const $ = cheerio.load(html);
 
   const scorecard = [];
 
+  const courseName = $(".CoursePage-pageLeadHeading").text().trim();
   const tableElement = $(".CourseScorecard-table");
 
   tableElement.find("thead tr th").each((i, el) => {
     const header = $(el).text().trim();
     scorecard.push({
       header,
+      hole: parseInt(header) ? parseInt(header) : undefined,
     });
   });
 
@@ -54,9 +61,12 @@ const scrapeScorecardData = (html) => {
   });
 
   // Filter out scorecard entries that are not numbers
-  return scorecard.filter((entry) => {
-    return Number.isInteger(parseInt(entry["header"]));
-  });
+  return {
+    name: courseName,
+    scorecard: scorecard.filter((entry) => {
+      return Number.isInteger(parseInt(entry["header"]));
+    }),
+  };
 };
 
 async function getScorecardData(courseId) {
