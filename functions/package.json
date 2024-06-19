@@ -6,8 +6,8 @@
     "serve": "npm run build && firebase serve --only functions --port 5001",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
-    "deploy:prod": "firebase use tour-pin-sheets && firebase deploy --only functions",
-    "deploy:dev": "firebase use tour-pin-sheets-dev && firebase deploy --only functions",
+    "deploy:prod": "npm run build && firebase use tour-pin-sheets && firebase deploy --only functions",
+    "deploy:dev": "npm run build && firebase use tour-pin-sheets-dev && firebase deploy --only functions",
     "logs": "firebase functions:log",
     "test": "jest"
   },
